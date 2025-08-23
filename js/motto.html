@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        background-image: url("https://s3.ap-northeast-2.amazonaws.com/materials.spartacodingclub.kr/webjong/images/background.jpg");
+        background-position: center;
+        background-size: cover;
+        color: white;
+      }
+
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .weather {
+        display: flex;
+        align-items: center;
+        margin-right: 30px;
+      }
+
+      .container {
+        display: flex;
+        flex-direction: column;
+        /* Flex 안의 아이템들을 세로 방향으로 배치합니다. */
+        justify-content: center;
+        /* 주축 방향으로 가운데 정렬합니다. */
+        align-items: center;
+        /* 교차축 방향으로 가운데 정렬합니다. */
+        height: 100vh;
+        text-align: center;
+      }
+
+      .footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        text-align: center;
+        font-weight: bold;
+        padding: 20px 0;
+      }
+
+      .greeting {
+        margin-bottom: 50px;
+      }
+
+      .motto {
+        margin-bottom: 100px;
+      }
+
+      .logo {
+        height: 32px;
+        margin-left: 30px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <nav class="navbar">
+      <img
+        class="logo"
+        src="https://s3.ap-northeast-2.amazonaws.com/materials.spartacodingclub.kr/webjong/images/sparta-logo.svg"
+        alt=""
+      />
+      <div class="weather">
+        <img
+          src="https://ssl.gstatic.com/onebox/weather/64/partly_cloudy.png"
+        />
+        <p>날씨 맑음, 20ºC</p>
+      </div>
+    </nav>
+
+    <div class="container">
+      <div class="greeting">
+        <h1>Hello, My name!</h1>
+        <h1 id="current-time">12:30</h1>
+      </div>
+
+      <div class="motto">
+        <h3>My life's motto</h3>
+        <h2>웃으면 행복해집니다.</h2>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p id="quoteAuthor">- 작자 미상 -</p>
+      <p id="quoteContent">멋진 명언입니다. 아이스크림을 먹으면 행복해져요.</p>
+    </div>
+
+    <script>
+      // 현재 시간을 #current-time에 표시
+      function renderCurrentTime() {
+        const now = new Date();
+        const formatted = new Intl.DateTimeFormat("en-US", {
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          hour12: true,
+          timeZone: "Asia/Seoul",
+        }).format(now);
+
+        const el = document.getElementById("current-time");
+        if (el) el.textContent = formatted;
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        renderCurrentTime();
+        setInterval(renderCurrentTime, 1000);
+      });
+
+      // 인증서가 347일전에 만료되어서 데이터가 불러와지지 않아요...
+      let url = "https://api.quotable.io/random"
+      fetch(url)
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          let author = data["author"];
+          let content = data["content"];
+
+          let authorMsg = `- ${author} -`
+          let contentMsg = `- ${content} -`
+
+          $("#quoteAuthor").text(authorMsg)
+          $("#quoteContent").text(authorMsg)
+        });
+
+        let weather_url = "http://openapi.seoul.go.kr:8088/6d4d776b466c656533356a4b4b5872/json/RealtimeCityAir/1/99";
+        fetch(weather_url)
+          .then(res => res.json())
+          .then(data => {
+              console.log(data);
+        })
+    </script>
+  </body>
+</html>

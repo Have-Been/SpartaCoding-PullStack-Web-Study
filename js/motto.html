@@ -71,10 +71,10 @@
         alt=""
       />
       <div class="weather">
-        <img
+        <img id="weather-icon"
           src="https://ssl.gstatic.com/onebox/weather/64/partly_cloudy.png"
         />
-        <p>날씨 맑음, 20ºC</p>
+        <p id="weather-temp">날씨 맑음, 20ºC</p>
       </div>
     </nav>
 
@@ -129,14 +129,21 @@
           let contentMsg = `- ${content} -`
 
           $("#quoteAuthor").text(authorMsg)
-          $("#quoteContent").text(authorMsg)
+          $("#quoteContent").text(contentMsg)
         });
 
-        let weather_url = "http://openapi.seoul.go.kr:8088/6d4d776b466c656533356a4b4b5872/json/RealtimeCityAir/1/99";
+        // 자꾸 오류가 떠서ㅠㅠ 임의로 cors 사용했습니다..
+        let weather_url = "https://cors-anywhere.herokuapp.com/http://13.209.69.177.nip.io/sparta_api/weather/seoul";
         fetch(weather_url)
           .then(res => res.json())
           .then(data => {
-              console.log(data);
+              let weatherIcon = data["icon"]
+              let temp = data["temp"]
+
+              console.log(weatherIcon)
+              console.log(temp)
+            $("#weather-icon").attr("src", weatherIcon)
+            $("#weather-temp").text(`${temp}ºC`)
         })
     </script>
   </body>

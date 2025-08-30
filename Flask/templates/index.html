@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+        <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f2f2f2;
+            padding: 50px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .lotto-container {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .lotto-ball {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: rgba(0,0,0,0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            font-weight: bold;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+        }
+
+        /* 색상 예시 */
+        .ball1 { background-color: #f44336; }  /* 빨강 */
+        .ball2 { background-color: #2196f3; }  /* 파랑 */
+        .ball3 { background-color: #ff9800; }  /* 주황 */
+        .ball4 { background-color: #4caf50; }  /* 초록 */
+        .ball5 { background-color: #9c27b0; }  /* 보라 */
+        .ball6 { background-color: #ffc107; }  /* 노랑 */
+
+        img {
+            height: 100px;
+            
+        }
+    </style>
+</head>
+<body>
+    <h1>안녕, {{ data.name }}</h1>
+    <img src="{{ url_for('static', filename='coinman.png') }}" alt="">
+    <h2>내 로또번호</h2>
+    <div class="lotto-container">
+        {% for element in data.lotto %}
+        <div class="lotto-ball ball{{ loop.index }}">{{ element|e }}</div>
+        {% endfor %}   
+    </div>
+    <h2>랜덤 로또번호</h2>
+    <div class="lotto-container">
+        {% for element in data.random_lotto %}
+            <div class="lotto-ball ball{{ loop.index }}">{{ element|e }}</div>
+        {% endfor %}   
+    </div>
+    <!-- 당첨 갯수에 따라 메세지 표시 -->
+    {% if data.common_count == 6 %}
+        <h2>{{data.common_count}} 개 맞았습니다. 1등입니다!</h2>
+    {% elif data.common_count == 5 %}
+        <h2>{{data.common_count}} 개 맞았습니다. 2등입니다!</h2>
+    {% elif data.common_count == 4 %}
+        <h2>{{data.common_count}} 개 맞았습니다. 3등입니다!</h2>
+    {% elif data.common_count == 3 %}
+        <h2>{{data.common_count}} 개 맞았습니다. 4등입니다!</h2>
+    {% else %}
+        <h2>{{data.common_count}} 개 맞았습니다. 탈락입니다..</h2>
+    {% endif %}
+    
+</body>
+</html>
